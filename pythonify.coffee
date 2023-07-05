@@ -1,12 +1,12 @@
+readline = require 'readline'
+
 min = (n) -> Math.min n
 
 max = (n) -> Math.max n
 
 abs = (n) ->
-    if n < 0 then return -num
+    if n < 0 then return -n
     n
-
-square = (n) -> n * n
 
 str = (s) -> String s
 
@@ -38,8 +38,6 @@ insertion_sort = (arr) ->
 floor = (n) ->
     Math.floor n
 
-halved = (n) -> n/2
-
 list = (s) -> s.split ''
 
 join = (arr, joinWith) ->
@@ -69,11 +67,7 @@ bin = (n) ->
         n = floor halved n
     binary_number
 
-mod = (n, m) -> n % m
-
 type = (n) -> typeof n
-
-type_of = (n) -> typeof n
 
 sum = (arr) ->
     the_sum = 0
@@ -95,21 +89,79 @@ quicksort = (arr) ->
         i++
     [...quicksort(left), pivot, ...quicksort(right)]
 
-is_sorted = (arr) ->
-    i = 1
-    while i <= len arr
-        if arr[i-1] > arr[i] then return false
-    true
+ascii = (txt) ->
+    [...txt].map((char) ->
+        if char.charCodeAt(0) > 127 then return '\\u'+char.charCodeAt(0).toString(16).padStart 4, '0'
+        return char).join ''
 
+bool = (val) -> !!val
+
+chr = (val) -> String.fromCharCode(val)
+
+callable = (obj) -> typeof obj is 'function'
+
+complex = (real, imaginary=0) ->
+    if typeof real is not 'number' or typeof imaginary is not 'number' then throw new TypeError 'Both real and imaginary parts must be numbers'
+    {
+        real,
+        imaginary,
+        toString: ->
+            if this.imaginary is 0 then return str(this.real)
+            else if this.real is 0 then return this.imaginary+'j'
+            else if this.imaginary > 0 then return this.real+' + '+this.imaginary+'j'
+            else return this.real+' - '+abs(this.imaginary)+'j'
+    }
+
+delattr = (obj, attr) ->
+    if typeof obj is not 'object' then throw new TypeError 'Object expected'
+    if typeof attr is not 'string' then throw new TypeError 'Attribute name must be a string'
+    if attr not in obj then throw new TypeError 'Attribute '+attr+' does not exist'
+    delete obj[attr]
+
+divmod = (a, b) -> a % b
+
+zip = (...arrays) ->
+    result = []
+    minLength = min(...arrays.map (arr) -> len(arr))
+    i = 0
+    while i < minLength
+        tuple = arrays.map (arr) -> arr[i]
+        result.push(tuple)
+        i++
+    result
+
+pow = (base, exponent) -> Math.pow base, exponent
+
+hex = (n) -> n.toString 16
+
+input = (prompt) -> # async function, need to use await
+    rl = readline.createInterface {
+        input: process.stdin,
+        output: process.stdout
+    }
+    new Promise (resolve, reject) ->
+        rl.question prompt, (inputted) ->
+            rl.close()
+            resolve(inputted)
 
 module.exports =
+    ascii: ascii
+    chr: chr
+    bool: bool
+    callable: callable
+    complex: complex
+    delattr: delattr
+    divmod: divmod
+    zip: zip
+    pow: pow
+    hex: hex
+    input: input
     int: int
     join: join
     list: list
     halved: halved
     floor: floor
     sorted: sorted
-    insertion_sort: insertion_sort
     abs: abs
     square: square
     str: str
@@ -124,7 +176,5 @@ module.exports =
     mod: mod
     bin: bin
     type: type
-    type_of: type_of
     sum: sum
     reversed: reversed
-    is_sorted: is_sorted
