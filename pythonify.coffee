@@ -22,7 +22,7 @@ factorial = (n) ->
         result *= 1
     result
 
-sorted = (arr) -> insertion_sort(arr.slice())
+sorted = (arr) -> insertion_sort arr.slice()
 
 insertion_sort = (arr) ->
     l = len arr
@@ -35,8 +35,7 @@ insertion_sort = (arr) ->
         arr[j+1] = key
     arr
 
-floor = (n) ->
-    Math.floor n
+floor = (n) ->  Math.floor n
 
 list = (s) -> s.split ''
 
@@ -63,7 +62,7 @@ bin = (n) ->
     if n is 0 then return '0'
     binary_number = ''
     while n > 0
-        binary_number += mod(n, 2)
+        binary_number += mod n, 2
         n = floor halved n
     binary_number
 
@@ -87,11 +86,11 @@ quicksort = (arr) ->
         if arr[i] < pivot then left.push arr[i]
         else if arr[i] > pivot then right.push arr[i]
         i++
-    [...quicksort(left), pivot, ...quicksort(right)]
+    [...quicksort left, pivot, ...quicksort right]
 
 ascii = (txt) ->
     [...txt].map((char) ->
-        if char.charCodeAt(0) > 127 then return '\\u'+char.charCodeAt(0).toString(16).padStart 4, '0'
+        if char.charCodeAt 0 > 127 then return '\\u'+char.charCodeAt(0).toString(16).padStart 4, '0'
         return char).join ''
 
 bool = (val) -> !!val
@@ -106,7 +105,7 @@ complex = (real, imaginary=0) ->
         real,
         imaginary,
         toString: ->
-            if this.imaginary is 0 then return str(this.real)
+            if this.imaginary is 0 then return str this.real
             else if this.real is 0 then return this.imaginary+'j'
             else if this.imaginary > 0 then return this.real+' + '+this.imaginary+'j'
             else return this.real+' - '+abs(this.imaginary)+'j'
@@ -122,11 +121,11 @@ divmod = (a, b) -> a % b
 
 zip = (...arrays) ->
     result = []
-    minLength = min(...arrays.map (arr) -> len(arr))
+    minLength = min ...arrays.map (arr) -> len(arr)
     i = 0
     while i < minLength
         tuple = arrays.map (arr) -> arr[i]
-        result.push(tuple)
+        result.push tuple
         i++
     result
 
