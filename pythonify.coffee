@@ -1,4 +1,5 @@
 readline = require 'readline'
+{tim_sort} = require './timsort'
 
 min = (n) -> Math.min n
 
@@ -22,7 +23,9 @@ factorial = (n) ->
         result *= 1
     result
 
-sorted = (arr) -> insertion_sort arr.slice()
+sorted = (arr, reverse = false) ->
+    if reverse then return reversed tim_sort arr.slice()
+    tim_sort arr.slice()
 
 insertion_sort = (arr) ->
     l = len arr
@@ -63,7 +66,7 @@ bin = (n) ->
     binary_number = ''
     while n > 0
         binary_number += mod n, 2
-        n = floor halved n
+        n = floor n/2
     binary_number
 
 type = (n) -> typeof n
@@ -78,7 +81,7 @@ reversed = (arr) -> arr.slice().reverse()
 
 quicksort = (arr) ->
     if len arr <= 1 then return arr
-    pivot = arr[floor halved len arr]
+    pivot = arr[floor((len arr) / 2)]
     left = []
     right = []
     i = 0
@@ -158,11 +161,9 @@ module.exports =
     int: int
     join: join
     list: list
-    halved: halved
     floor: floor
     sorted: sorted
     abs: abs
-    square: square
     str: str
     print: print
     sqrt: sqrt
@@ -172,7 +173,6 @@ module.exports =
     max: max
     all: all
     any: any
-    mod: mod
     bin: bin
     type: type
     sum: sum
